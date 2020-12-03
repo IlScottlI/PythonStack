@@ -46,6 +46,9 @@ Scott.make_deposit(97.34)
 Scott.make_withdrawal(44.56)
 Scott.info()
 
+Jane = User('Jane Doe', 'doe.j@pg.com',
+            'doe.j').make_deposit(1000).make_withdrawal(300).info()
+
 Jim = User('Jim Bob', 'bob.j@pg.com', 'bob.j')
 Jim.make_deposit(150)
 
