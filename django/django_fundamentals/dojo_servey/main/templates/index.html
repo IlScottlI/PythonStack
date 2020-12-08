@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dojo Survey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Contact-Form-Clean.css' %}">
+</head>
+
+<body>
+    <div class="contact-clean">
+        <form method="post" action="result">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-xl-5"><label class="col-form-label">Your Name</label></div>
+                <div class="col"><input class="form-control" type="text" name="your_name" autocomplete="on"></div>
+            </div>
+            <div class="form-row">
+                <div class="col-xl-5"><label class="col-form-label">Dojo Location</label></div>
+                <div class="col"><select class="form-control" name="location">
+                        <option value="Arlington, VA" selected="">Arlington, VA</option>
+                        <option value="Bellevue, WA">Bellevue, WA</option>
+                        <option value="Boise, ID">Boise, ID</option>
+                        <option value="Chicago, IL">Chicago, IL</option>
+                        <option value="Dallas, TX">Dallas, TX</option>
+                        <option value="Los Angeles, CA">Los Angeles, CA</option>
+                        <option value="Oakland, CA">Oakland, CA</option>
+                        <option value="Orange County, CA">Orange County, CA</option>
+                        <option value="Silicon Valley, CA">Silicon Valley, CA</option>
+                        <option value="Tulsa, OK">Tulsa, OK</option>
+                        <option value="Online">Online</option>
+                    </select></div>
+            </div>
+            <div class="form-row">
+                <div class="col-xl-5"><label class="col-form-label">Favorite Language</label></div>
+                <div class="col"><select class="form-control" name="language">
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="C++">C++</option>
+                        <option value="C#">C#</option>
+                        <option value="PHP">PHP</option>
+                        <option value="Perl">Perl</option>
+                    </select></div>
+            </div>
+            <div class="form-group"><label>Comments (optional)</label><textarea class="form-control" name="comments"
+                    autocomplete="on"></textarea></div>
+            <div class="form-group d-xl-flex justify-content-xl-end"><button class="btn btn-primary"
+                    type="submit">Button</button></div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

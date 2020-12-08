@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dojo Survey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Contact-Form-Clean.css' %}">
+</head>
+
+<body>
+    <div class="contact-clean">
+        <form>
+            <h1><span style="text-decoration: underline;">Submitted Info</span></h1>
+            <div class="form-row">
+                <div class="col">
+                    <h4>Name:</h4>
+                </div>
+                <div class="col"><span>{{request.POST.your_name}}</span></div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <h4>Dojo Location:</h4>
+                </div>
+                <div class="col"><span>{{request.POST.location}}</span></div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <h4>Favorite Language:</h4>
+                </div>
+                <div class="col"><span>{{request.POST.language}}</span></div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <h4>Comment:</h4>
+                </div>
+                <div class="col"><span>{{request.POST.comments}}</span></div>
+            </div>
+            <div class="form-group d-xl-flex justify-content-xl-end"><button class="btn btn-primary" type="reset"
+                    onclick="window.location = `{{backto}}`;">Go Back</button></div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

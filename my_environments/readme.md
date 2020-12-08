@@ -25,3 +25,11 @@ Create a new app
 Run django server
 
 # python manage.py runserver
+
+Run this to get migrations ready
+
+# python manage.py makemigrations
+
+Run this to view static files
+
+# python manage.py migrate
