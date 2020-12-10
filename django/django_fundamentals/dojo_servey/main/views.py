@@ -9,10 +9,10 @@ def index(request):
 
 
 def result(request):
-
     context = {
         'request': request,
-        'backto': '/'
-
+        'backto': '/',
+        'session': request.session
     }
+    request.session["firstcookie"] = request.POST
     return render(request, 'index-1.html', context)
