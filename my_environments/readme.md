@@ -16,7 +16,7 @@ python -m venv <Environment-Name>
 
 Create a new project
 
-# django-admin startproject project_name
+# django-admin startproject project_namep
 
 Create a new app
 

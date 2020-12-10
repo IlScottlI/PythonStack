@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Counter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="text-center">Counter</h1>
+            <h4 class="text-center">{{session.counter}} Times</h4>
+            <p></p>
+            <form class="form-inline" action="setIncrement " method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Set Increment"></input>
+                    <label class="ml-4 bold">X</label>
+
+                    <input class="form-control form-control-lg d-inline-block" type="text"
+                        style="width: 66px;margin: 20px;" minlength="1" required="" inputmode="numeric"
+                        value="{{session.setpoint}}" name="setpoint">
+
+                </div>
+            </form>
+            <p><button onclick="window.location = 'destroy_session'" class="btn btn-primary">Clear Counter</button></p>
+            <p><button onclick="window.location = 'plus_two'" class="btn btn-primary">Plus 2</button></p>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
