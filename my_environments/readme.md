@@ -41,3 +41,17 @@ Run this to get migrations ready
 Run this to view static files
 
 # python manage.py migrate
+
+Django shell
+
+# python manage.py shell
+
+Creating an admin user
+
+# python manage.py createsuperuser
+
+Register your models in admin.py
+
+# from .models import model_name
+
+# admin.site.register(model_name)
