@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Ninja Gold</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
+</head>
+
+<body>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center"><strong>Ninja Gold</strong><br></h2>
+            </div><label>Your Gold:</label><input class="d-inline-block ml-3" type="text" readonly value="{{total}}">
+            <div class="row justify-content-center features">
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 item">
+                    <div class="box border-dark border">
+                        <h3 class="name">Farm</h3>
+                        <p class="description">(earns 10-20 golds)</p>
+                        <form action="/process_money/" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="Farm" />
+                            <button class="btn btn-outline-secondary" type="submit">Find Gold</button></form>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 item">
+                    <div class="box border-dark border">
+                        <h3 class="name">Cave</h3>
+                        <p class="description">(earns 5-10 golds)<br></p>
+                        <form action="/process_money/" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="Cave" />
+                            <button class="btn btn-outline-secondary" type="submit">Find Gold</button></form>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 item">
+                    <div class="box border-dark border">
+                        <h3 class="name">House</h3>
+                        <p class="description">(earns 2-5 golds)<br></p>
+                        <form action="/process_money/" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="House" />
+                            <button class="btn btn-outline-secondary" type="submit">Find Gold</button></form>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 item">
+                    <div class="box border-dark border">
+                        <h3 class="name">Casino</h3>
+                        <p class="description">(earns/takes 0-50 golds)<br></p>
+                        <form action="/process_money/" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="Casino" />
+                            <button class="btn btn-outline-secondary" type="submit">Find Gold</button></form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ul class="list-unstyled border-dark border console pl-3 pt-2">
+                        {% for item in log %}
+                        <li class="text-{{item.color}}">{{item.string}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

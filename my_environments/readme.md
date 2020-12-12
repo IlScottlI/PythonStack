@@ -22,9 +22,17 @@ Create a new app
 
 # python manage.py startapp app_name
 
+Change Directory
+
+# cd app_name
+
 Run django server
 
 # python manage.py runserver
+
+Change Directory (Back a folder)
+
+# cd ..\..\
 
 Run this to get migrations ready
 
