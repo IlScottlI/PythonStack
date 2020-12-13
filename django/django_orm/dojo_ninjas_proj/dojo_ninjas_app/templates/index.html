@@ -1,14 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dojos &amp; Ninjas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
 </head>
 
 <body>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="intro">
+                <h1 class="text-center m-5"><strong>Dojos &amp; Ninjas</strong><br></h1>
+            </div>
+            <div class="row justify-content-center features">
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-5 item">
+                    <div class="box">
+                        <h3 class="text-center mb-4"><strong>Add a Dojo</strong><br></h3>
+                        <form action="/process/" method="POST">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="dojo" />
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">Name</label></div>
+                                <div class="col-xl-8"><input class="form-control" type="text" name="name"
+                                        maxlength="255" required=""></div>
+                            </div>
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">City</label></div>
+                                <div class="col-xl-8"><input class="form-control" type="text" name="city" required=""
+                                        maxlength="255"></div>
+                            </div>
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">State</label></div>
+                                <div class="col-xl-8"><input class="form-control" type="text" name="state" maxlength="2"
+                                        required="" minlength="2"></div>
+                            </div>
+                            <div class="form-row row-cols-1 justify-content-center m-2">
+                                <div class="col-xl-4"><button
+                                        class="btn btn-outline-secondary d-xl-flex justify-content-xl-start"
+                                        type="submit">Add</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-5 item">
+                    <div class="box">
+                        <h3 class="text-center mb-4"><strong>Add a Ninja</strong><br></h3>
+                        <form action="/process/" method="POST">
+                            {% csrf_token %}
+                            <input class="form-control" type="hidden" name="type" value="ninja" />
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">First Name</label></div>
+                                <div class="col-xl-8"><input class="form-control" type="text" name="first_name"
+                                        maxlength="255" required=""></div>
+                            </div>
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">Last Name</label></div>
+                                <div class="col-xl-8"><input class="form-control" type="text" name="last_name"
+                                        required="" maxlength="255"></div>
+                            </div>
+                            <div class="form-row m-2">
+                                <div class="col-xl-4"><label class="col-form-label">Dojo</label></div>
+                                <div class="col-xl-8"><select class="custom-select" required name="dojo_id">
+                                        <option value=""></option>
+                                        {% for item in ul %}
+                                        <option value=" {{item.id}}"> {{item.dojo}}</option>
+                                        {% endfor %}
+                                    </select></div>
+                            </div>
+                            <div class="form-row row-cols-1 justify-content-center m-2">
+                                <div class="col-xl-4"><button
+                                        class="btn btn-outline-secondary d-xl-flex justify-content-xl-start"
+                                        type="submit">Add</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h1 class="text-center m-2 mb-4 h2"><strong>All the Dojos</strong><br></h1>
+    <div class="container d-xl-flex justify-content-xl-center align-items-xl-center">
+        <ul style="list-style-type: inherit;">
+            {% for item in ul %}
+            <li class="h4">Ninjas at the {{item.dojo}} Dojo
+                <ul class="solid-circle ml-2">
+                    {% for i in item.ninjas %}
+                    <li class="h5 mt-2">{{i.first_name}} {{i.last_name}}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
