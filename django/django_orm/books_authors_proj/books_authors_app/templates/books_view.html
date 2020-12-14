@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Books/Authors</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="#">Books &amp; Authors</a><button
+                data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/">Books</a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="/authors">Authors</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="intro"></div>
+            <div class="row features">
+                <div class="col item">
+                    <div class="box">
+                        <h1 class="text-left mb-4">{{book.title}}</h1>
+                        <div class="form-row m-3">
+                            <div class="col d-xl-flex justify-content-xl-start">
+                                <p class="h5">ID:&nbsp;</p>
+                                <p class="h5">{{book.id}}</p>
+                            </div>
+                        </div>
+                        <div class="form-row m-3">
+                            <div class="col-xl-2 d-xl-flex justify-content-xl-start">
+                                <p class="h5">Description:&nbsp;</p>
+                            </div>
+                            <div class="col">
+                                <p class="text-left"><strong>{{book.desc}}</strong></p>
+                            </div>
+                        </div>
+                        <div class="form-row m-3">
+                            <div class="col">
+                                <p class="text-left d-block h5">Authors:&nbsp;</p>
+                                <ul class="text-left d-block ml-3 h6">
+                                    {% for item in book_authors %}
+                                    <li>{{item}}</li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <form action="/process/" method="post">
+                                            {% csrf_token %}
+                                            <input class="form-control" type="hidden" name="book_id"
+                                                value="{{book.id}}">
+                                            <input class="form-control" type="hidden" name="type" value="update_book">
+                                            <div class="form-row">
+                                                <div class="col-xl-2"><select class="form-control form-control-sm"
+                                                        name="author_id">
+                                                        <option value="">-select an author-</option>
+                                                        {% for item in authors %}
+                                                        <option value="{{item.id}}">{{item.first_name}}
+                                                            {{item.last_name}}</option>
+                                                        {% endfor %}
+                                                    </select></div>
+                                                <div class="col d-xl-flex justify-content-xl-start"><button
+                                                        class="btn btn-outline-secondary btn-sm"
+                                                        type="submit">Add</button></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
