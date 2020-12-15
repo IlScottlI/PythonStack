@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Semi-Restful TV Shows</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="/shows"><strong>Semi-Restful TV
+                    Shows</strong><br></a><button data-toggle="collapse" class="navbar-toggler"
+                data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/shows">All Shows</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/shows/new"
+                            onclick="sessionStorage.setItem(`backTo`, window.location.pathname)">Add a New
+                            Show</a></li>
+                    <li class="nav-item"></li>
+                </ul>
+            </div>
+        </div>
+    </nav><a class="float-right underline mr-5" href="#" onclick="window.location = sessionStorage.getItem(`backTo`)">Go
+        Back</a>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="d-xl-flex justify-content-between justify-content-xl-center mt-4">
+                <h1 class="d-inline-block">Add a New Show</h1>
+            </div>
+            <div class="row justify-content-center features mt-4">
+                <div class="col-xl-6 col-6">
+                    <form action="/process/" method="post">
+                        {% csrf_token %}
+                        <div class="form-group"><label>Title</label><input class="form-control" type="text" name="title"
+                                required="" maxlength="255"></div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col"><label>Network</label><input class="form-control" type="text"
+                                        name="network" maxlength="255" required=""></div>
+                                <div class="col"><label>Release Date</label><input class="form-control" type="date"
+                                        required="" name="release_date"></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea class="form-control"
+                                name="description"></textarea></div>
+                        <div class="form-group d-xl-flex justify-content-xl-center"><button
+                                class="btn btn-outline-secondary" type="submit">Create</button></div><input
+                            class="form-control" type="hidden" name="type" value="new">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

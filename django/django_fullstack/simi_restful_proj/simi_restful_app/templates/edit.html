@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Semi-Restful TV Shows</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="/shows"><strong>Semi-Restful TV
+                    Shows</strong><br></a><button data-toggle="collapse" class="navbar-toggler"
+                data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/shows">All Shows</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shows/new"
+                            onclick="sessionStorage.setItem(`backTo`, window.location.pathname)">Add a New Show</a></li>
+                    <li class="nav-item"></li>
+                </ul>
+            </div>
+        </div>
+    </nav><a class="float-right underline mr-5" href="#" onclick="window.location = sessionStorage.getItem(`backTo`)">Go
+        Back</a>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="d-xl-flex justify-content-between justify-content-xl-center mt-4">
+                <h1 class="d-inline-block">Edit Show {{show_id}}</h1>
+            </div>
+            <div class="row justify-content-center features mt-4">
+                <div class="col-xl-6 col-6">
+                    <form action="/process/" method="post">
+                        {% csrf_token %}
+                        <div class="form-group"><label>Title</label><input class="form-control" type="text" name="title"
+                                required maxlength="255" value="{{show_obj.title}}"></div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col"><label>Network</label><input class="form-control" type="text"
+                                        name="network" maxlength="255" required value="{{show_obj.network}}"></div>
+                                <div class="col"><label>Release Date</label><input class="form-control" type="date"
+                                        required name="release_date" value="{{show_rel_date}}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea class="form-control"
+                                name="description">{{show_obj.description}}</textarea></div>
+                        <div class="form-group d-xl-flex justify-content-xl-center"><button
+                                class="btn btn-outline-secondary" type="submit">Update</button></div>
+                        <div class="form-group d-xl-flex justify-content-xl-center">
+                            <a class="underline" href="/shows/{{show_id}}">Go to Show</a>
+                        </div>
+                        <input class="form-control" type="hidden" name="type" value="update">
+                        <input class="form-control" type="hidden" name="show_id" value="{{show_id}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="myModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Show</h4><button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the show?&nbsp;</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button"
+                        data-dismiss="modal">Back</button><button class="btn btn-danger" type="button"
+                        onclick="window.location = `/shows/` + ThisItem + `/destroy`">DELETE</button></div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
