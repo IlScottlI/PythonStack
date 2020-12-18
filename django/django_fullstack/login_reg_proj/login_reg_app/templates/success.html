@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html style="background: #475d62 url({% static '/img/star-sky.jpg' %}) !important;background-size: cover !important;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login and Registration</title>
+
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Registration-Form-with-Photo.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+</head>
+
+<body style="background-color: transparent;">
+    <nav class="navbar navbar-dark navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="#">Login and Registration<br /></a><a
+                class="btn btn-outline-primary" role="button" href="/logout/">Log Out</a><button data-toggle="collapse"
+                data-target="#navcol-1" class="navbar-toggler"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button></div>
+    </nav>
+    <div class="container">
+        <h1 class="text-light">Success! Welcome, {{userObject.first_name}}!</h1>
+        <h3 class="text-success">Successfully {{loginType}}!</h3>
+    </div>
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
