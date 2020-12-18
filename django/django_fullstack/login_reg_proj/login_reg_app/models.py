@@ -7,13 +7,13 @@ class UserManager(models.Manager):
     def basic_validator(self, postData):
         errors = {}
         if len(postData['first_name']) < 2:
-            errors['first_name'] = 'First Name must be longer than 2 characters'
+            errors['first_name'] = 'First Name should be at least 2 characters'
         else:
             FIRST_NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
             if not FIRST_NAME_REGEX.match(postData['first_name']):
                 errors['first_name'] = 'First name can contain letters only'
         if len(postData['last_name']) < 2:
-            errors['last_name'] = 'Last Name must be longer than 2 characters'
+            errors['last_name'] = 'Last Name should be at least 2 characters'
         else:
             LAST_NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
             if not LAST_NAME_REGEX.match(postData['last_name']):
@@ -40,7 +40,6 @@ class UserManager(models.Manager):
         errors = {}
         try:
             userAccount = User.objects.filter(email=postData['login_email'])[0]
-            print(userAccount)
         except:
             print('Account Not Found')
         EMAIL_REGEX = re.compile(

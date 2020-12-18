@@ -80,7 +80,7 @@ def success(request):
     try:
         loginType = request.session['loginType']
     except:
-        loginType = "Registered"
+        loginType = ""
     if userLogged == {}:
         action = redirect('/')
     else:
