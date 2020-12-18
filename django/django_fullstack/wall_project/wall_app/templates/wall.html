@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+{% load static %}
+<html style="background: #475d62 url({% static '/img/wallpaper.jpg' %}) !important;background-size: cover !important;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>CodingDojo Wall</title>
+
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Registration-Form-with-Photo.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+</head>
+
+<body style="background-color: transparent;">
+    <nav class="navbar navbar-dark navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="/">CodingDojo Wall<br /></a>
+            <div class="row">
+                <div class="mr-4 mt-2">
+                    <h5 class="text-light">Welcome {{userObject.first_name}}</h5>
+                </div>
+                <div>
+                    <a class="btn btn-outline-primary border-0 underline" role="link" href="/logout/">Log off</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="text-light">
+        <div class="container">
+            {% for message in messages %}
+            <div role="alert" class="alert alert-info ml-5 mr-5 mt-0 {{ message.tags }}"><button type="button"
+                    class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">×</span></button><span><strong>
+                        {{message }}</strong>
+                </span>
+            </div>
+            {% endfor %}
+            <div class="row mt-3">
+                <div class="col mb-5">
+                    <h4>Post a message</h4>
+                    <form method="post" action="/process/">
+                        {% csrf_token %}
+                        <input type="hidden" class="form-control" name="type" value="post_message" />
+                        <input type="hidden" name="user_id" value="{{userObject.id}}">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="message"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group d-xl-flex justify-content-xl-end mr-3"><button
+                                        class="btn btn-primary" type="submit">Post a message</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                {% for item in Posts %}
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 text-dark">{{item.Messages.author.first_name}}
+                                {{item.Messages.author.last_name}} -
+                                {{item.Messages.created_at |date:'M d Y'}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-dark card-text">{{item.Messages.message}}</p>
+                        </div>
+                    </div>
+                    <ul>
+                        {% if item.comments %}
+                        {% for comment in item.comments %}
+                        <li class="mt-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 text-dark">{{comment.author.first_name}}
+                                        {{comment.author.last_name}} - {{comment.created_at | date:'M d Y'}}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-dark card-text">{{comment.comment}}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                        <li class="mt-3">
+                            <h4>Post a comment</h4>
+                            <form method="post" action="/process/">
+                                {% csrf_token %}
+                                <input type="hidden" class="form-control" name="type" value="post_comment" />
+                                <input type="hidden" name="user_id" value="{{userObject.id}}">
+                                <input type="hidden" name="message_id" value="{{item.Messages.id}}">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group d-xl-flex justify-content-xl-end mr-3"><button
+                                                class="btn btn-success" type="submit">Post a comment</button></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
