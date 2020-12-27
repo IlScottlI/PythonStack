@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid twenty mt-3">
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-toggle="tab"
+                    href="#tab-1">Timeline View</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="tab" id="goToCalendar"
+                    href="\Sscheduler" onclick="$(`#loader`).show(); window.location = '\scheduler'">Calendar
+                    View</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active bg-white" role="tabpanel" id="tab-1">
+                {% include 'includes/schedule_filters.html' %}
+                <div id="timeline"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

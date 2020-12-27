@@ -1,0 +1,22 @@
+#loader {
+  padding: 20%;
+  background-color: #515c6b;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  display: block;
+  height: -webkit-fill-available !important;
+  display: none;
+}
+
+html {
+  /*height: 1000px;*/
+  background: #475d62 url(../../assets/img/wallpaper.jpg);
+  background-size: cover;
+  position: relative;
+}
+
+:root {
+  --primary: #121a4f !important;
+}
+

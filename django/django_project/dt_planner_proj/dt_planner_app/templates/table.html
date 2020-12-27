@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid mt-3">
+    <div>
+        <ul role="tablist" class="nav nav-tabs">
+            <li role="presentation" class="nav-item"><a role="tab" data-toggle="tab" class="nav-link active"
+                    href="#tab-1">My Approvals</a></li>
+            <li role="presentation" class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-2">All
+                    Approvals</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="tab-1">
+                <div class="card shadow">
+                    <div class="row card-header py-3">
+                        <form action="/process/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="status_filter">
+                            <select class="custom-select custom-select-sm" onchange="this.form.submit()"
+                                id="status_filter" name="status_filter" value="{{status.id}}">
+                                <option value="0">All</option>
+                                {% for status in statuses %}
+                                {% if status_filter != status.id %}
+                                <option value="{{status.id}}">{{status}}</option>
+                                {% else %}
+                                <option value="{{status.id}}" selected>{{status}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive table mt-2 text-sm-left" role="grid"
+                            aria-describedby="dataTable_info">
+                            <table class="table table-sm my-0 text-sm-left" id="my_dataTable">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Project Name</strong></td>
+                                        <td><strong>Event Time</strong></td>
+                                        <td><strong>Module</strong></td>
+                                        <td><strong>Department</strong></td>
+                                        <td><strong>Area</strong></td>
+                                        <td><strong>Type</strong></td>
+                                        <td><strong>Status</strong></td>
+                                        <td><strong>Owner</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="my_approvals">
+                                    {% for item in my_approvals%}
+                                    <tr>
+                                        <td>{{item.calendar_dt}}</td>
+                                        <td>{{item.calendar_dt.start_date}}<br>{{item.calendar_dt.end_date}}</td>
+                                        <td>
+                                            {% for module in item.calendar_dt.module.all %}
+                                            {{module}}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for department in item.calendar_dt.department.all %}
+                                            {{department}}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for area in item.calendar_dt.area.all %}
+                                            {{area}}
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{item.calendar_dt.types}}</td>
+                                        <td class="mr-2 btn btn-{{item.calendar_dt.status.color}} text-sm-center btn-block"
+                                            onclick="setBackTo(window.location.pathname);window.location = '/request/{{item.calendar_dt.id}}'">
+                                            {{item.calendar_dt.status}}</td>
+                                        <td class="ml-2 pl-2">{{item.calendar_dt.owner}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tab-2">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        {% include 'includes/filters.html' %}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-nowrap">
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                    <label>Show&nbsp;<select id="pageSize"
+                                            class="form-control form-control-sm custom-select custom-select-sm">
+                                            <option value="1">1</option>
+                                            <option value="5">5</option>
+                                            <option value="8" selected>8</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive table mt-2 text-sm-left" role="grid"
+                            aria-describedby="dataTable_info">
+                            <table class="table table-sm my-0 text-sm-left" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Project Name</strong></td>
+                                        <td><strong>Event Time</strong></td>
+                                        <td><strong>Module</strong></td>
+                                        <td><strong>Department</strong></td>
+                                        <td><strong>Area</strong></td>
+                                        <td><strong>Type</strong></td>
+                                        <td><strong>Status</strong></td>
+                                        <td><strong>Owner</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="approvals">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 align-self-center">
+                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                    <ul class="pagination" id="pagination">
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

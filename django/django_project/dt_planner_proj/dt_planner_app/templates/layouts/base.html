@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Static assets -->
+{% load static %}
+<html style="background: #475d62 url({% static '/img/wallpaper.jpg' %});">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Downtime Planner</title>
+    <link rel="icon" type="image/png" sizes="100x100" href="{% static '/img/plantIcon.png' %}">
+    <link rel="stylesheet" href="{% static  '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Registration-Form-with-Photo.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fonts/simple-line-icons.min.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/dx.common.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.4/css/dx.light.compact.css" />
+    <link rel="stylesheet" href="{% static  '/css/styles.css' %}">
+</head>
+
+<body style="background-color: transparent;">
+
+    {% load tz %}
+
+    {% timezone userObject.plant.local.time_zone %}
+
+    {% include 'includes/navigation.html' %}
+
+    {% block content %}{% endblock content %}
+
+    {% include 'includes/scripts.html' %}
+
+    {% endtimezone %}
+</body>
+
+</html>

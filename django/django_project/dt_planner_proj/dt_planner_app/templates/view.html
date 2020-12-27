@@ -1,0 +1,452 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+
+
+
+
+<div class="modal fade" role="dialog" tabindex="-1" id="add_comment">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Comment</h4><button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Comment</p>
+                <form action="/process/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="add_comment">
+                    <input type="hidden" name="user_id" value="{{userLogged}}">
+                    <input type="hidden" name="calendar_id" value="{{request.id}}">
+                    <input type="hidden" name="plant_id" value="{{userObject.plant.id}}">
+                    <div class="form-group">
+                        <textarea class="form-control" name="title"></textarea>
+                    </div>
+
+            </div>
+            <div class="modal-footer"><button class="btn btn-success" type="submit">Add</button>
+
+                <button class="btn btn-warning" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" tabindex="-1" id="approve_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-success">Approve</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <form method="POST" action="/process/">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>Comment (optional)</p>
+                    <div class="form-group">
+                        <textarea class="form-control" name="title"></textarea>
+                    </div>
+                    <input type="hidden" name="type" value="approve_request">
+                    <input type="hidden" name="user_id" value="{{userObject.id}}">
+                    <input type="hidden" name="calendar_id" value="{{request.id}}">
+                    <input type="hidden" name="plant_id" value="{{userObject.plant.id}}">
+                    {% for track in tracks %}
+                    {% if userObject.id == track.track_approver.user.id %}
+                    <input type="hidden" name="track_id" value="{{track.id}}">
+                    <input type="hidden" name="approver_type" value="{{track.track_approver.type}}">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">Approve</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" tabindex="-1" id="pending_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-warning">Pending</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <form method="POST" action="/process/">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>Comment (optional)</p>
+                    <div class="form-group">
+                        <textarea class="form-control" name="title"></textarea>
+                    </div>
+                    <input type="hidden" name="type" value="pending_request">
+                    <input type="hidden" name="user_id" value="{{userObject.id}}">
+                    <input type="hidden" name="calendar_id" value="{{request.id}}">
+                    <input type="hidden" name="plant_id" value="{{userObject.plant.id}}">
+                    {% for track in tracks %}
+                    {% if userObject.id == track.track_approver.user.id %}
+                    <input type="hidden" name="track_id" value="{{track.id}}">
+                    <input type="hidden" name="approver_type" value="{{track.track_approver.type}}">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" type="submit">Pending</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" tabindex="-1" id="decline_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-danger">Decline</h4><button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/process/">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p>* Comment (Required)</p>
+                        <div class="form-group">
+                            <textarea class="form-control" name="title" required></textarea>
+                        </div>
+                        <input type="hidden" name="type" value="decline_request">
+                        <input type="hidden" name="user_id" value="{{userObject.id}}">
+                        <input type="hidden" name="calendar_id" value="{{request.id}}">
+                        <input type="hidden" name="plant_id" value="{{userObject.plant.id}}">
+                        {% for track in tracks %}
+                        {% if userObject.id == track.track_approver.user.id %}
+                        <input type="hidden" name="track_id" value="{{track.id}}">
+                        <input type="hidden" name="approver_type" value="{{track.track_approver.type}}">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="submit">Decline</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <button class="btn btn-outline-secondary btn-sm pl-3 pr-3 ml-3 back" type="button"
+                style="border-radius: 20px;color: #121a4f;border-color: #121a4f;padding: 0px;"
+                onclick="navBack();">Back</button>
+            <div class="col col-5">
+                <h5 class="mb-0">{{request.title}}</h5>
+            </div>
+            <div class="col col-3"><strong class="text-primary mr-1">ID:</strong><span
+                    class="font-weight-bold">{{request.id}}</span></div>
+            <div class="col">
+                <div class="float-right"><button class="btn btn-{{request.status.color}} disabled btn-sm ml-3 mr-3"
+                        type="button" disabled>{{request.status}}</button>
+                    {% if role == 'editor' %}
+                    <button class="btn btn-outline-secondary btn-sm mr-3 ml-3" type="button"
+                        onclick="setBackTo_edit(window.location.pathname);window.location = '/request/{{request.id}}/change/'">
+                        Edit Request
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-6">
+                <div>
+                    <div class="table-responsive table-borderless m-2">
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="text-primary"><strong>Business</strong></td>
+                                    <td class="text-primary"><strong>Module</strong></td>
+                                    <td class="text-primary"><strong>Department</strong></td>
+                                    <td class="text-primary"><strong>Area</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {% for item in request.business.all %}
+                                        <span>{{item}} </span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for item in request.module.all %}
+                                        <span>{{item}} </span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for item in request.department.all %}
+                                        <span>{{item}} </span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for item in request.area.all %}
+                                        <span>{{item}} </span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive table-borderless m-2">
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="text-primary"><strong>Start</strong></td>
+                                    <td class="text-primary"><strong>End</strong></td>
+                                    <td class="text-primary"><strong>Hours</strong></td>
+                                    <td class="text-primary"><strong>Days Prior</strong></td>
+                                </tr>
+                                <tr>
+
+                                    <td>{{request.start_date }}<br></td>
+                                    <td>{{request.end_date }}<br></td>
+
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% for message in messages %}
+                    {% if message.extra_tags == 'approval' %}
+                    <div role="alert" class="alert {{message.tags}}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <span>
+                            <strong></strong>
+                            {{message}}
+                        </span>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <!-- Approval Buttons -->
+                    {% for track in tracks %}
+                    {% if userObject.id == track.track_approver.user.id %}
+                    <div class="mt-5 p-4">
+                        <div class="btn-group float-left d-xl-flex align-items-xl-end" role="group">
+                            <!-- Approved Button -->
+                            {% if track.status.id == 2 %}
+                            <button class="btn btn-success pr-4 pl-4" type="button" data-target="#approve_modal"
+                                data-toggle="modal" disabled>Approve
+                            </button>
+                            {% else %}
+                            <button class="btn btn-success pr-4 pl-4" type="button" data-target="#approve_modal"
+                                data-toggle="modal">Approve
+                            </button>
+                            {% endif %}
+                            <!-- Pending Button -->
+                            {% if track.status.id == 1 %}
+                            <button class="btn btn-warning pr-4 pl-4" type="button" data-target="#pending_modal"
+                                data-toggle="modal" disabled>Pending
+                            </button>
+                            {% else %}
+                            <button class="btn btn-warning pr-4 pl-4" type="button" data-target="#pending_modal"
+                                data-toggle="modal">Pending
+                            </button>
+                            {% endif %}
+                            <!-- Decline Button -->
+                            {% if track.status.id == 3 %}
+                            <button class="btn btn-danger pr-4 pl-4" type="button" data-target="#decline_modal"
+                                data-toggle="modal" disabled>Decline
+                            </button>
+                            {% else %}
+                            <button class="btn btn-danger pr-4 pl-4" type="button" data-target="#decline_modal"
+                                data-toggle="modal">Decline
+                            </button>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col">
+                <div class="table-responsive table-borderless">
+                    <table class="table table-bordered table-sm">
+                        <tbody>
+                            <tr>
+                                <th class="text-right text-primary">Created:</th>
+                                <td>{{request.created_at}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Created By:</th>
+                                <td class="card col-6">
+                                    <img class="rounded-circle" src="{% static '/img/user_black.svg' %}" width="30px">
+                                    <span>{{request.created_by}}
+                                        <small class="ml-4 text-primary"> <br>
+                                            {{request.created_by.email}}</small>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Modified:</th>
+                                <td>{{request.updated_at}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Modified By:</th>
+                                <td class="card col-6 mb-3">
+                                    <img class="rounded-circle" src="{% static '/img/user_black.svg' %}" width="30px">
+                                    <span>{{request.modified_by}}
+                                        <small class="ml-4 text-primary"> <br>
+                                            {{request.modified_by.email}}</small>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Downtime Owner:</th>
+                                <td class="card col-6 mb-3">
+                                    <img class="rounded-circle" src="{% static '/img/user_black.svg' %}" width="30px">
+                                    <span>{{request.owner}}
+                                        <small class="ml-4 text-primary"> <br> {{request.owner.email}}</small>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Contributors:</th>
+                                <td>
+                                    <div class="row p-0 m-0">
+                                        {% for item in request.contributors.all %}
+                                        <div class="col-6 card">
+                                            <img class="rounded-circle" src="{% static '/img/user_black.svg' %}"
+                                                width="30px">
+                                            <span>{{item}}
+                                                <small class="ml-4 text-primary"> <br>
+                                                    {{item.user.email}}</small>
+                                            </span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Type of Request:</th>
+                                <td>{{request.types}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right text-primary">Downtime Reason Code:</th>
+                                <td>{{request.reasons}}</td>
+                            </tr>
+                            {% for item in responses %}
+                            <tr>
+                                <th class="text-right text-primary">{{item.question}}
+                                </th>
+                                <td>{{item}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col col-6">
+                <h5 class="text-primary">Comments</h5>
+                {% for message in messages %}
+                {% if message.extra_tags == 'title' %}
+                <div role="alert" class="alert {{message.tags}}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span>
+                        <strong></strong>
+                        {{message}}
+                    </span>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <ul class="list-group">
+                    {% for item in comments %}
+
+                    <li class="list-group-item">
+                        <blockquote class="blockquote">
+                            <p class="mb-0">{{item}}</p>
+                            <footer class="blockquote-footer">
+                                <img class="rounded-circle" src="{% static '/img/user_black.svg' %}" width="30px">
+                                <span>{{item.created_by}}
+                                    <br>
+                                    <small class="ml-4 text-primary"> {{item.created_by.email}}</small>
+                                </span>
+                            </footer>
+                        </blockquote><sup class="float-right">{{item.created_at}}</sup>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col col-1">
+                <div class="input-group btn">
+                    <div class="input-group-prepend"></div>
+                    <div class="input-group-append"><button class="btn text-muted input-group-text" type="btn"
+                            data-toggle="modal" data-target="#add_comment"><i class="fa fa-plus mr-4"></i><i
+                                class="fa fa-comment"></i></button></div>
+                </div>
+            </div>
+            <div class="col col-7 mt-5">
+                <h5 class="text-primary">Tracking</h5>
+                <ul class="list-group">
+                    {% for item in tracks %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"><img class="rounded-circle" src="{% static '/img/user_black.svg' %}"
+                                    width="30px">
+                                <span>{{item.track_approver}}
+                                    <br>
+                                    <small class="ml-4 text-primary"> {{item.track_approver.user.email}}</small>
+                                </span>
+                            </div>
+                            <div class="col"><span class="small">
+                                    {% if item.track_approver.type == 'PR' %}
+                                    <i class="fa fa-star text-warning" data-toggle="tooltip"
+                                        title="Primary Approver"></i>
+                                    {% endif %}
+                                    Approver</span></div>
+                            <div class="col text-center">
+                                <h4 class="text-{{item.status.color}} small">{{item.status}}</h4>
+                                <h6 class="text-muted mb-2 small">{{item.updated_at}}</h6>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col col-7 mt-5">
+                <h5 class="text-primary">History</h5>
+                <ul class="list-group" style="max-height: 40rem; overflow: auto;">
+                    {% for item in history %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col"><img class="rounded-circle" src="{% static '/img/user_black.svg' %}"
+                                    width="30px">
+                                <span>{{item.user}}
+                                    <br>
+                                    <small class="ml-4 text-primary"> {{item.user.email}}</small>
+                                </span>
+                            </div>
+                            <div class="col"><span class="small">{{item}}</span></div>
+                            <div class="col text-center">
+                                <h6 class="text-muted mb-2 small">{{item.created_at}}</h6>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock content %}

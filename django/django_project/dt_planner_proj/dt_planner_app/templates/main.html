@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col" onclick="setBackTo(window.location.pathname); window.location = '/request'">
+            <div class="card">
+                <div class="card-header d-xl-flex justify-content-center align-items-xl-center pt-4 pb-4 btn"><i
+                        class="fa fa-plus mr-2"></i>
+                    <h5>New Request</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col" onclick="setBackTo(window.location.pathname);window.location = '/view'">
+            <div class="card">
+                <div class="card-header d-xl-flex justify-content-center align-items-xl-center pt-4 pb-4 btn"><i
+                        class="fa fa-tasks mr-2"></i>
+                    <h5 class="d-inline-block">View Requests</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col" onclick="setBackTo(window.location.pathname);window.location = '/scheduler'">
+            <div class="card">
+                <div class="card-header d-xl-flex justify-content-center align-items-xl-center pt-4 pb-4 btn"><i
+                        class="fa fa-calendar mr-2"></i>
+                    <h5 class="d-inline-block">Calendar</h5>
+                </div>
+            </div>
+        </div>
+        <!-- onclick="setBackTo(window.location.pathname);window.location = '/dashboard'" -->
+        <div class="col">
+            <div class="card disabled">
+                <div class="card-header d-xl-flex justify-content-center align-items-xl-center pt-4 pb-4 "><i
+                        class="fa fa-bar-chart-o mr-2"></i>
+                    <h5 class="d-inline-block disabled">Dashboard</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col" onclick="setBackTo(window.location.pathname);window.location = '/approvals'">
+            <div class="card">
+                <div class="card-header d-xl-flex justify-content-center align-items-xl-center pt-4 pb-4 btn"><span
+                        class="badge badge-pill badge-light mr-2">{{my_count}}</span>
+                    <h5 class="d-inline-block">Approvals</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

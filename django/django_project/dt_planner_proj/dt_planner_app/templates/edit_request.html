@@ -1,0 +1,292 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+{% include 'includes/loader.html' %}
+{% load static %}
+
+<!-- Template Data loaded directly to SessionStorage -->
+<script>
+    sessionStorage.setItem('id', `{{request.id}}`)
+    sessionStorage.setItem('repeat', `{{request.repeat}}`)
+    sessionStorage.setItem('owner', `{{request.owner}}`)
+    sessionStorage.setItem('start_date', `{{request.start_date |date:"Y-M-d H:i"}}`)
+    sessionStorage.setItem('end_date', `{{request.end_date |date:"Y-M-d H:i"}}`)
+    sessionStorage.setItem('recurrenceRule', `{{request.recurrenceRule}}`)
+    b_ids = []
+    {% for b in request.business.all %}
+    b_ids.push(`{{b.id}}`)
+    {% endfor %}
+    sessionStorage.setItem('b_ids', b_ids)
+    m_ids = []
+    {% for m in request.module.all %}
+    m_ids.push(`{{m.id}}`)
+    {% endfor %}
+    sessionStorage.setItem('m_ids', m_ids)
+    d_ids = []
+    {% for d in request.department.all %}
+    d_ids.push(`{{d.id}}`)
+    {% endfor %}
+    sessionStorage.setItem('d_ids', d_ids)
+    a_ids = []
+    {% for a in request.area.all %}
+    a_ids.push(`{{a.id}}`)
+    {% endfor %}
+    sessionStorage.setItem('a_ids', a_ids)
+
+</script>
+
+<div class="modal fade" role="dialog" tabindex="-1" id="update_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-warning">Update</h4><button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/process/">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p>* Comment (Required)</p>
+                        <div class="form-group">
+                            <textarea class="form-control" name="title" required id="textarea_comment"></textarea>
+                        </div>
+                        <input type="hidden" name="type" value="update_request">
+                        <input type="hidden" name="user_id" value="{{userObject.id}}">
+                        <input type="hidden" name="calendar_id" value="{{request.id}}">
+                        <input type="hidden" name="plant_id" value="{{userObject.plant.id}}">
+                        {% for track in tracks %}
+                        {% if userObject.id == track.track_approver.user.id %}
+                        <input type="hidden" name="track_id" value="{{track.id}}">
+                        <input type="hidden" name="approver_type" value="{{track.track_approver.type}}">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="modal-footer">
+                        <small class="ml-3 mr-3">If you make any changes to a request, it will automatically go back to
+                            'Pending' Status and
+                            will need to go through the appropriate approval process again.</small>
+                        <button class="btn btn-warning" type="button" id="comment_update_btn" disabled
+                            onclick="$('#update_form').unbind('submit')">Update</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid " id="app">
+    <div class="row">
+        <div class="col m-2" id="backButton"><button class="btn btn-outline-light btn-sm pl-3 pr-3 ml-3 back"
+                type="button" onclick="navBack_edit();" style="border-radius: 20px;">Back</button></div>
+    </div>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation"><a class="nav-link active text-dark" role="tab" data-toggle="tab"
+                    id="tabTitle" href="#tab-1">Edit Downtime Request</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="card">
+                    <form action="/process/" method="post" id="update_form">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="update_request">
+                        <input type="hidden" name="id" value="{{request.id}}">
+                        <input type="hidden" name="status_id" value="1">
+                        <input type="hidden" name="user_id" value="{{userObject.id}}">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8"><label class="projectName">* Project Name<br></label><input
+                                        class="form-control-sm w-100 border-0" type="text" id="form-Title"
+                                        autocomplete="on" name="title" required value="{{request.title}}"></div>
+                                <div class="col-4"><label class="dtOwner">* Downtime Owner</label><select
+                                        class="custom-select custom-select-sm" id="downtimeOwner"
+                                        value="{{request.owner.id}}" name="owner_id" required>
+                                        {% for user in users %}
+                                        {% if user.id == request.owner.id %}
+                                        <option value="{{user.id}}" selected>{{user.email}}</option>
+                                        {% else %}
+                                        <option value="{{user.id}}">{{user.email}}</span>
+                                        </option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select></div>
+                            </div>
+                            {% include 'includes/edit_pickers.html' %}
+                            <div class="row">
+                                <div class="col-xl-3"><label class="requestType">* Type of Request<br></label>
+                                    <div class="form-group"><select class="custom-select custom-select-sm core"
+                                            id="typeSelect" name="type_id" required>
+                                            <option value=""></option>
+                                            {% for item in types %}
+                                            {% if item.id == request.types.id%}
+                                            <option value="{{item.id}}" selected>{{item}}</option>
+                                            {% else %}
+                                            <option value="{{item.id}}">{{item}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select></div>
+                                </div>
+                                <div class="col-xl-3"><label class="dtReasonCode">* Downtime Reason Code<br></label>
+                                    <div class="form-group"><select class="custom-select custom-select-sm core"
+                                            id="reasonSelect" name="reason_id" required>
+                                            <option value=""></option>
+                                            {% for item in reasons %}
+                                            {% if item.id == request.reasons.id%}
+                                            <option value="{{item.id}}" selected>{{item}}</option>
+                                            {% else %}
+                                            <option value="{{item.id}}">{{item}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select></div>
+
+                                </div>
+                                <div class="col"><label class="d-block dateStart">* Start</label>
+                                    <div class="form-group">
+                                        <input id="form-eventStart" class="w-100 dateTimePicker" required
+                                            name="start_date">
+                                    </div>
+                                    <input type="hidden" name="start_date_formated" id="start_date_formated">
+                                </div>
+                                <div class="col"><label class="d-block dateEnd">* End</label>
+                                    <div class="form-group">
+                                        <input id="form-eventEnd" class="w-100 dateTimePicker" required name="end_date">
+                                    </div>
+                                    <input type="hidden" name="end_date_formated" id="end_date_formated">
+                                </div>
+                                <div class="col-12 col-sm-12 col-xl-1">
+                                    <div class="toggle">
+                                        <input type="checkbox" class="check" id="form-Repeat" {{repeat}} />
+                                        <b class="b switch"></b>
+                                        <b class="b track"></b>
+                                    </div>
+                                    <label class="repeat">Repeat</label>
+                                </div>
+                            </div>
+                            <div class="row" id="repeatRow">
+                                <div class="col-xl-2"><label class="frequency">Repeat<br></label>
+                                    <div class="form-group">
+                                        <select class="custom-select custom-select-sm" id="form-repeatFreq"
+                                            onchange="changeFrequency(this.value);calRepeat();">
+                                            <option value="HOURLY" id="HOURLY">Hourly</option>
+                                            <option value="DAILY" id="DAILY">Daily</option>
+                                            <option value="WEEKLY" id="WEEKLY">Weekly</option>
+                                            <option value="MONTHLY" id="MONTHLY">Monthly</option>
+                                            <option value="YEARLY" id="YEARLY">Yearly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2"><label class="every">Every<br></label>
+                                    <div class="form-group"><input type="number" id="interval"
+                                            style="width: 30%;padding: 4px 0px 4px 10px;" min="1" value="1"><label
+                                            id="everyLabel" style="padding-left: 10px;">week(s)</label></div>
+                                </div>
+                                <div class="col-xl-3 offset-xl-0">
+                                    <label class="endRepeat">End repeat</label>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio"><input class="custom-control-input"
+                                                type="radio" id="form-repeatNever" checked="" name="repeat"
+                                                value="never"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', true);"><label
+                                                class="custom-control-label never" for="form-repeatNever"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', true);">Never</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio d-inline-block"><input
+                                                class="custom-control-input" type="radio" id="form-onCheck"
+                                                name="repeat"
+                                                onclick="$('#form-endOn').prop('disabled', false);$('#form-afterCheck').prop('disabled', true);"><label
+                                                class="custom-control-label on" for="form-onCheck"
+                                                onclick="$('#form-endOn').prop('disabled', false);$('#form-afterCheck').prop('disabled', true);">On&nbsp;
+                                                &nbsp;&nbsp;</label></div><input class="form-control dateTimePicker"
+                                            id="form-endOn" required=""
+                                            style="width: 50% !important;display: inline-block;">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio d-inline-block"><input
+                                                class="custom-control-input" type="radio" id="form-after-btn"
+                                                name="repeat" value="after"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', false);"><label
+                                                class="custom-control-label after" for="form-after-btn"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', false);">After&nbsp;
+                                                &nbsp;</label></div><input class="form-control d-inline-block"
+                                            type="number" id="form-afterCheck"
+                                            style="width: 20%;padding: 4px 0px 4px 10px;" min="1" value="1">
+                                    </div>
+                                </div>
+                                <div class="col" id="form-weekly"><label class="repeatOn">Repeat On</label>
+                                    <div class="btn-toolbar">
+                                        <div class="btn-group" role="group" id="form-weeklyRepeat"
+                                            onclick="checkWeekday();calRepeat();">
+                                            <button class="btn btn-light weekday sun" id="SU" type="button">Sun</button>
+                                            <button class="btn btn-light weekday mon" id="MO" type="button">Mon</button>
+                                            <button class="btn btn-light weekday tue" id="TU" type="button">Tue</button>
+                                            <button class="btn btn-light weekday wed" id="WE" type="button">Wed</button>
+                                            <button class="btn btn-light weekday thu" id="TH" type="button">Thu</button>
+                                            <button class="btn btn-light weekday fri" id="FR" type="button">Fri</button>
+                                            <button class="btn btn-light weekday sat" id="SA" type="button">Sat</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" id="form-yearly"><label>Repeat On</label>
+                                    <div class="form-group"><select class="custom-select custom-select-sm"
+                                            id="form-YearlyMonth" style="width: 50%;"></select><input
+                                            class="d-inline-block" type="number" id="form-YearlyDay"
+                                            style="width: 30%;padding: 4px 0px 4px 10px;margin-left: 19px;" min="1"
+                                            value="1" max="31"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="display: none;" id="recurrenceRule"><label
+                                        class="small">Recursion
+                                        String</label>
+                                    <div class="form-group">
+                                        <input type="text" id="repeatString" class="w-100 small" name="recurrenceRule"
+                                            value="{{request.recurrenceRule}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                                <div class="col-6"><label class="dtApprover">Approver(s)</label>
+                                    <div id="form-approver" class="row">
+
+                                    </div>
+                                </div>
+                                <div class="col-6"><label class="dtContributor">Contributor(s)</label>
+                                    <div id="form-contributor" class="row">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="questionsRow">
+
+                            </div>
+                            <input type="hidden" name="approvers" id="approval_response">
+                            <input type="hidden" name="business_ids" id="business_ids">
+                            <input type="hidden" name="module_ids" id="module_ids">
+                            <input type="hidden" name="department_ids" id="department_ids">
+                            <input type="hidden" name="area_ids" id="area_ids">
+                            <input type="hidden" name="contributors" id="contributor_response">
+                            <input type="hidden" name="plant_id" value="{{userObject.plant_id}}">
+                            <input type="hidden" name="update_comment" id="update_comment">
+
+                        </div>
+                        <textarea class="w-75 m-5" rows="20" name="question_response" id="question_response"
+                            style="display:none;"></textarea>
+                        <div class="card-footer d-xl-flex justify-content-xl-end">
+                            <button type="submit" style="display: none" id="update_submit"></button>
+                            <button class="btn btn-success pl-4 pr-4 update" id="updateBtn" type="button"
+                                data-target="#update_modal" data-toggle="modal" onclick="update_time()">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

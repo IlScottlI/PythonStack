@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html style="background: #475d62 url({% static '/img/wallpaper.jpg' %});">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Downtime Planner</title>
+    <link rel="icon" type="image/png" sizes="100x100" href="{% static '/img/plantIcon.png' %}">
+    <link rel="stylesheet" href="{% static  '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static  '/css/styles.css' %}">
+</head>
+
+<body style="background-color: transparent;">
+    <!-- <div role="alert" class="alert alert-success"><span><strong>Login </strong>Success.</span></div> -->
+    <h1 class="text-white"> {{ postData }}</h1>
+    <script src="{% static '/js/jquery.min.js'%}"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js'%}"></script>
+</body>
+
+</html>

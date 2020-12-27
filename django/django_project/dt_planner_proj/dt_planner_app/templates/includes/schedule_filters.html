@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row small">
+            <div class="col-xl-1"><label class="small status">Status</label>
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm small schedule_filter" style="border-style: initial;">
+                        <option value="">All</option>
+                        {% for item in statuses %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-1"><label class="small type">Type </label>
+                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
+                        style="border-style: initial;max-height: 2rem !important;">
+                        <option value="">All</option>
+                        {% for item in types %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+            <div class="col-xl-2"><label class="small dtReason">Downtime Reason</label>
+                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
+                        style="border-style: initial;max-height: 2rem !important;">
+                        <option value="">All</option>
+                        {% for item in reasons %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+            <div class="col-xl-2"><label class="small business">Business</label>
+                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
+                        style="border: none;">
+                        <option value="">All</option>
+                        {% for item in businesses %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+            <div class="col-xl-2"><label class="small module">Module</label>
+                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                        <option value="">All</option>
+                        {% for item in modules %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+            <div class="col-xl-2"><label class="small department">Department</label>
+                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                        <option value="">All</option>
+                        {% for item in departments %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+            <div class="col-xl-2"><label class="small area">Area</label>
+                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                        <option value="">All</option>
+                        {% for item in areas %}
+                        <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select></div>
+            </div>
+        </div>
+    </div>
+</div>

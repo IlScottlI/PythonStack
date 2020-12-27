@@ -1,0 +1,173 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% load static %}
+<div class="container-fluid mt-5" id="app">
+    <div class="row" style="margin-top: -15px;">
+        <div class="col offset-xl-0 p-2" id="navOptions" style="display: none;"><button
+                class="btn btn-outline-primary btn-sm pl-3 pr-3 ml-3 back" type="button"
+                style="border-radius: 20px;color: #121a4f;border-color: #121a4f;padding: 0px;"
+                onclick="navBack();">Back</button></div>
+    </div>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation"><a class="nav-link active text-dark" role="tab" data-toggle="tab"
+                    id="tabTitle" href="#tab-1">New Downtime Request</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-8"><label class="projectName">* Project Name<br></label><input
+                                    class="form-control-sm w-100 border-0" type="text" id="form-Title"
+                                    autocomplete="on"></div>
+                            <div class="col"><label class="dtOwner">* Downtime Owner</label><select
+                                    class="custom-select custom-select-sm" id="buSelect-1"></select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-3"><label class="business">* Business&nbsp;</label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="buSelect"></select></div>
+                            </div>
+                            <div class="col-12 col-xl-3"><label class="module">Module</label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="moduleSelect"></select></div>
+                            </div>
+                            <div class="col-12 col-xl-3"><label class="department">Department</label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="deptSelect"></select></div>
+                            </div>
+                            <div class="col"><label class="area">Area</label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="areaSelect"></select></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-3"><label class="requestType">* Type of Request<br></label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="typeSelect"></select></div>
+                            </div>
+                            <div class="col-xl-3"><label class="dtReasonCode">* Downtime Reason Code<br></label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="reasonSelect"></select></div>
+                            </div>
+                            <div class="col"><label class="d-block dateStart">* Start</label>
+                                <div class="form-group"><input id="form-eventStart" class="w-100 dateTimePicker"
+                                        required=""></div>
+                            </div>
+                            <div class="col"><label class="d-block dateEnd">* End</label>
+                                <div class="form-group"><input id="form-eventEnd" class="w-100 dateTimePicker"
+                                        required=""></div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-xl-1">
+                                <div class="toggle">
+                                    <input type="checkbox" class="check" id="form-Repeat" />
+                                    <b class="b switch"></b>
+                                    <b class="b track"></b>
+                                </div>
+                                <label class="repeat">Repeat</label>
+                            </div>
+                        </div>
+                        <div class="row" id="repeatRow">
+                            <div class="col-xl-2"><label class="frequency">Repeat<br></label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="form-repeatFreq"
+                                        onchange="changeFrequency(this.value);calRepeat();"></select></div>
+                            </div>
+                            <div class="col-xl-2"><label class="every">Every<br></label>
+                                <div class="form-group"><input type="number" id="interval"
+                                        style="width: 30%;padding: 4px 0px 4px 10px;" min="1" value="1"><label
+                                        id="everyLabel" style="padding-left: 10px;">week(s)</label></div>
+                            </div>
+                            <div class="col-xl-3 offset-xl-0">
+                                <form><label class="endRepeat">End repeat</label>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio"><input class="custom-control-input"
+                                                type="radio" id="form-repeatNever" checked="" name="repeat"
+                                                value="never"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', true);"><label
+                                                class="custom-control-label never" for="form-repeatNever"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', true);">Never</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio d-inline-block"><input
+                                                class="custom-control-input" type="radio" id="form-onCheck"
+                                                name="repeat"
+                                                onclick="$('#form-endOn').prop('disabled', false);$('#form-afterCheck').prop('disabled', true);"><label
+                                                class="custom-control-label on" for="form-onCheck"
+                                                onclick="$('#form-endOn').prop('disabled', false);$('#form-afterCheck').prop('disabled', true);">On&nbsp;
+                                                &nbsp;&nbsp;</label></div><input class="form-control dateTimePicker"
+                                            id="form-endOn" required=""
+                                            style="width: 50% !important;display: inline-block;">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio d-inline-block"><input
+                                                class="custom-control-input" type="radio" id="form-after-btn"
+                                                name="repeat" value="after"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', false);"><label
+                                                class="custom-control-label after" for="form-after-btn"
+                                                onclick="$('#form-endOn').prop('disabled', true);$('#form-afterCheck').prop('disabled', false);">After&nbsp;
+                                                &nbsp;</label></div><input class="form-control d-inline-block"
+                                            type="number" id="form-afterCheck"
+                                            style="width: 20%;padding: 4px 0px 4px 10px;" min="1" value="1">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col" id="form-weekly"><label class="repeatOn">Repeat On</label>
+                                <div class="btn-toolbar">
+                                    <div class="btn-group" role="group" id="form-weeklyRepeat"
+                                        onclick="checkWeekday();calRepeat();"><button class="btn btn-light weekday sun"
+                                            id="SU" type="button">Sun</button><button class="btn btn-light weekday mon"
+                                            id="MO" type="button">Mon</button><button class="btn btn-light weekday tue"
+                                            id="TU" type="button">Tue</button><button class="btn btn-light weekday wed"
+                                            id="WE" type="button">Wed</button><button class="btn btn-light weekday thu"
+                                            id="TH" type="button">Thu</button><button class="btn btn-light weekday fri"
+                                            id="FR" type="button">Fri</button><button class="btn btn-light weekday sat"
+                                            id="SA" type="button">Sat</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3" id="form-yearly"><label>Repeat On</label>
+                                <div class="form-group"><select class="custom-select custom-select-sm"
+                                        id="form-YearlyMonth" style="width: 50%;"></select><input class="d-inline-block"
+                                        type="number" id="form-YearlyDay"
+                                        style="width: 30%;padding: 4px 0px 4px 10px;margin-left: 19px;" min="1"
+                                        value="1" max="31"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" style="display: none;"><label>Repeat String</label>
+                                <div class="form-group"><input type="text" id="repeatString" class="w-100"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <hr>
+                            </div>
+                            <div class="col"><label class="dtApprover">Approver(s)</label>
+                                <div id="form-approver" class="row">
+
+                                </div>
+                            </div>
+                            <div class="col"><label class="dtContributor">Contributor(s)</label>
+                                <div id="form-contributor" class="row">
+                                    <mgt-people-picker default-selected-user-ids="" id="selected-contributor">
+                                    </mgt-people-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="questionsRow"></div>
+                    </div>
+                    <div class="card-footer d-xl-flex justify-content-xl-end"><button class="btn btn-success pl-4 pr-4"
+                            id="updateBtn" type="button" onclick="updateForm();"
+                            style="display: none;">Update</button><button class="btn btn-primary pl-4 pr-4 submit"
+                            id="submitBtn" type="button" onclick="submitForm();">Submit</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
