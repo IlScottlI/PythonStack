@@ -19,6 +19,8 @@ urlpatterns = [
     path('approvals', views.approvals, name='approvals'),
     path('calendar', views.CalendarListView.as_view(), name='list'),
     path('calendar/<int:pk>/', views.CalendarDetailView.as_view(), name='detail'),
+    path('switcher', views.switcher),
+
     # Redirects
     path('process/', views.process),
     path('success/', views.success),

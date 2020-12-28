@@ -24,20 +24,21 @@ var langMenuItems = [];
 var rules = []
 if (window.location.pathname == '/request') {
 
+    setTimeout(() => {
+        try {
+            sessionStorage.removeItem('question_response')
+            sessionStorage.removeItem('b_ids')
+            sessionStorage.removeItem('m_ids')
+            sessionStorage.removeItem('d_ids')
+            sessionStorage.removeItem('a_ids')
+            sessionStorage.removeItem('start_date')
+            sessionStorage.removeItem('end_date')
+            sessionStorage.removeItem('recurrenceRule')
+            rules = []
+        } catch (error) {
 
-    try {
-        sessionStorage.removeItem('question_response')
-        sessionStorage.removeItem('b_ids')
-        sessionStorage.removeItem('m_ids')
-        sessionStorage.removeItem('d_ids')
-        sessionStorage.removeItem('a_ids')
-        sessionStorage.removeItem('start_date')
-        sessionStorage.removeItem('end_date')
-        sessionStorage.removeItem('recurrenceRule')
-        rules = []
-    } catch (error) {
-
-    }
+        }
+    }, 500);
 }
 
 function initlizeComboBoxes() {

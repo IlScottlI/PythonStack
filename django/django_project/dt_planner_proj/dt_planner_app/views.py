@@ -498,6 +498,7 @@ def request(request):
 
 
 def approvals(request):
+    my_approvals = []
     try:
         userLogged = request.session['userLogged']
     except:
@@ -516,16 +517,20 @@ def approvals(request):
         status_filter = 1
     try:
         my_count = len(Track.objects.filter(track_approver=Approver.objects.get(
-            user=User.objects.get(id=userLogged)), status=Status.objects.get(id=1)))
+            user=userObject), status=Status.objects.get(id=1)))
     except:
         my_count = 0
     if userLogged == {}:
         action = redirect('/')
-    if status_filter == 0:
-        my_approvals = Track.objects.filter(track_approver=Approver.objects.get(
-            user=User.objects.get(id=userLogged)))
-    else:
-        my_approvals = []
+    try:
+        if status_filter != 0:
+            my_approvals = Track.objects.filter(track_approver=Approver.objects.get(
+                user=userObject), status=Status.objects.get(id=status_filter))
+        else:
+            my_approvals = Track.objects.filter(track_approver=Approver.objects.get(
+                user=userObject))
+    except:
+        pass
     context = {
         'time_zone': userObject.plant.local.time_zone,
         'timezones': pytz.common_timezones,
@@ -916,6 +921,25 @@ def approveRequest(request):
                 calendar.status = Status.objects.get(id=1)
                 calendar.save()
         messages.success(request, 'Request Approved', extra_tags='approval')
+    return action
+
+
+def switcher(request):
+    try:
+        userLogged = request.session['userLogged']
+    except:
+        userLogged = {}
+    try:
+        userObject = User.objects.get(id=userLogged)
+    except:
+        userObject = {}
+    context = {
+        'userLogged': userLogged,
+        'userObject': userObject,
+        'plants': Plant.objects.all(),
+        'plant_id': userObject.plant.id
+    }
+    action = render(request, 'switcher.html', context)
     return action
 
 
