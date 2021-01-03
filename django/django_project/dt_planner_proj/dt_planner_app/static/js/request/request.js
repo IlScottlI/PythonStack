@@ -472,17 +472,31 @@ function getApprovers(from, id) {
     let response = []
     $.get(`/${from}_approvers/${id}`).done(function (data) {
         data.forEach(element => {
-            populateApproverIds(element.user_id)
-            populateApproverIds_(element.id)
+
+            if (window.location.pathname == '/request') {
+                populateApproverIds_(element.id)
+            } else {
+                populateApproverIds(element.user_id)
+            }
         });
     })
     return response
 }
 
 function getApprover(id) {
+    let approverBankIDs = []
+    try {
+        approverBank.forEach(element => {
+            approverBankIDs.push(element.id)
+        })
+    } catch (error) {
+
+    }
     $.get(`/user/${id}`).done(function (data) {
         data.forEach(element => {
-            populateApproverBank(element)
+            if (!approverBankIDs.includes(id)) {
+                populateApproverBank(element)
+            }
         });
     })
 }
@@ -617,6 +631,12 @@ function scan() {
                 getApprover(element)
             });
         }
+        approverBank = []
+        if (approver_ids_.length > 0) {
+            approver_ids_.forEach(element => {
+                getApprover(element)
+            });
+        }
         contributorBank = []
         if (contributor_ids.length > 0) {
             contributor_ids.forEach(element => {
@@ -631,6 +651,20 @@ function scan() {
         $('#end_date_formated').val(moment($('#form-eventEnd').data().daterangepicker.startDate).utc().format())
     } catch (error) {
 
+    }
+    if (window.location.pathname == '/request') {
+        setTimeout(() => {
+            try {
+                $(`#form-eventStart`).on('change', () => {
+                    $('#start_date_formated').val(moment($('#form-eventStart').data().daterangepicker.startDate).utc().format())
+                })
+                $(`#form-eventEnd`).on('change', () => {
+                    $('#end_date_formated').val(moment($('#form-eventEnd').data().daterangepicker.startDate).utc().format())
+                })
+            } catch (error) {
+
+            }
+        }, 1000);
     }
 }
 

@@ -1,6 +1,10 @@
 from django.urls import path, include
 from . import views
 from rest_framework import routers
+from django.conf.urls.static import static
+from dt_planner_app.views import UploadView
+from django.conf import settings
+from dt_planner_app import views as uploader_views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -8,6 +12,7 @@ router.register(r'calendars', views.CalendarViewSet)
 
 urlpatterns = [
     # Template Views
+    path('upload', uploader_views.UploadView.as_view(), name='fileupload'),
     path('', views.index, name='login'),
     path('register/', views.register, name='register'),
     path('home', views.home, name='home'),
@@ -58,4 +63,4 @@ urlpatterns = [
     path('set_timezone', views.set_timezone),
     path('calendar_api', views.calendar_api),
     path('calendar_api/<int:id>', views.getCalendar),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

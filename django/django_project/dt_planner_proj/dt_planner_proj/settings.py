@@ -42,6 +42,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'dt_planner_app',
+    'uploader',
     "rest_framework_json_api",
     "rest_framework",
     'django.contrib.admin',

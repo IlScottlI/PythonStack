@@ -51,9 +51,9 @@ function initlizeComboBoxes() {
     initlizeReason();
     initlizeMaxRows();
     initlizeStatus();
-    $('.viewFilter').on('change', () => {
-        buildTable();
-    })
+    // $('.viewFilter').on('change', () => {
+    //     buildTable();
+    // })
     initlizeLanguage(localStorage.getItem('lang'));
 
 }

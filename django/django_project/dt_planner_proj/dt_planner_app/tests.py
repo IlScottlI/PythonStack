@@ -1,6 +1,6 @@
-import datetime
+def greet_me(**kwargs):
+    for key, value in kwargs.items():
+        print("{0} = {1}".format(key, value))
 
-start_date_str = '12/23/2020 12:27'
-start_date = datetime.datetime.strptime(start_date_str, '%m/%d/%Y %H:%M')
 
-print(start_date)
+greet_me(name="yasoob")

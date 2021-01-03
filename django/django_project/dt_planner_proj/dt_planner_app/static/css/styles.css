@@ -206,10 +206,10 @@ div.profile-row {
   top: 50%;
   transform: translate(-50%, 0%);
 }
-
+/* 
 div.alert {
   width: 40%;
-}
+} */
 
 .alert-col > .alert {
   padding: 10px;

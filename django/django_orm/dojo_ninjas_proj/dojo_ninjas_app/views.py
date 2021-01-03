@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Dojo, Ninja
+from .models import Dojo, Ninja, Sector
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ def index(request):
             'ul': ul,
         }
     print(context)
-    return render(request, 'index.html', context)
+    return render(request, 'qadb.html', context)
 
 
 def process(request):

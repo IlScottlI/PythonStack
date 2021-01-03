@@ -3,64 +3,108 @@
         <div class="row small">
             <div class="col-xl-1"><label class="small status">Status</label>
                 <div class="form-group">
-                    <select class="custom-select custom-select-sm small schedule_filter" style="border-style: initial;">
+                    <select class="custom-select custom-select-sm small filtered_status" id="filtered_status"
+                        style="border-style: initial;">
                         <option value="">All</option>
                         {% for item in statuses %}
+                        {% if item.id == status_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="col-xl-1"><label class="small type">Type </label>
-                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm small viewFilter filtered_type" id="filtered_type"
                         style="border-style: initial;max-height: 2rem !important;">
                         <option value="">All</option>
                         {% for item in types %}
+                        {% if item.id == type_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-2"><label class="small dtReason">Downtime Reason</label>
-                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm small viewFilter filtered_reason" id="filtered_reason"
                         style="border-style: initial;max-height: 2rem !important;">
                         <option value="">All</option>
                         {% for item in reasons %}
+                        {% if item.id == reason_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-2"><label class="small business">Business</label>
-                <div class="form-group"><select class="custom-select custom-select-sm small viewFilter"
-                        style="border: none;">
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm small viewFilter filtered_business"
+                        id="filtered_business" style="border: none;">
                         <option value="">All</option>
                         {% for item in businesses %}
+                        {% if item.id == business_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-2"><label class="small module">Module</label>
-                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm viewFilter filtered_module" style="border: none;"
+                        id="filtered_module">
                         <option value="">All</option>
                         {% for item in modules %}
+                        {% if item.id == module_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-2"><label class="small department">Department</label>
-                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm viewFilter filtered_department" style="border: none;"
+                        id="filtered_department">
                         <option value="">All</option>
                         {% for item in departments %}
+                        {% if item.id == department_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
             <div class="col-xl-2"><label class="small area">Area</label>
-                <div class="form-group"><select class="custom-select custom-select-sm viewFilter" style="border: none;">
+                <div class="form-group">
+                    <select class="custom-select custom-select-sm viewFilter filtered_area" style="border: none;"
+                        id="filtered_area">
                         <option value="">All</option>
                         {% for item in areas %}
+                        {% if item.id == area_id %}
+                        <option value="{{item.id}}" selected>{{item}}</option>
+                        {% else %}
                         <option value="{{item.id}}">{{item}}</option>
+                        {% endif %}
                         {% endfor %}
-                    </select></div>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

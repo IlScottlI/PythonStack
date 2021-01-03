@@ -1,5 +1,6 @@
 from django.contrib import admin
 from admin_views.admin import AdminViews
+from uploader.models import Upload
 from dt_planner_app.models import User, Calendar, Plant, Business, Module, Department, Area, Type, Reason, Approver, Question, Track, History, Comment, Locale, Response, Status, Contributor
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter
@@ -21,7 +22,8 @@ admin.site.register([
     Locale,
     Response,
     Status,
-    Contributor
+    Contributor,
+    Upload
 ])
 
 

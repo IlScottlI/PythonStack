@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Dojo, Ninja
+from .models import Sector, SubSector, ProductFamily, Category, OtherIndividuals, ProductType, AdditionalDetail, Action, QADB
 
-admin.site.register(Dojo)
-admin.site.register(Ninja)
+admin.site.register([Sector, SubSector, ProductFamily, Category,
+                     OtherIndividuals, ProductType, AdditionalDetail, Action, QADB])

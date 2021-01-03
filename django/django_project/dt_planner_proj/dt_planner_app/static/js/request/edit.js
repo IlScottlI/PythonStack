@@ -44,6 +44,7 @@ try {
 
         }, 200);
     });
+
     setTimeout(() => {
         if (sessionStorage.getItem('b_ids')) {
             var b_ids = sessionStorage.getItem('b_ids').split(',')

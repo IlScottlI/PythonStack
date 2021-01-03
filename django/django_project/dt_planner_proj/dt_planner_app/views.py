@@ -17,6 +17,22 @@ from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from dt_planner_app.filters import CalendarFilter
 
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from .models import Upload
+from django.db.models import Q
+
+
+class UploadView(CreateView):
+    model = Upload
+    fields = ['upload_file', ]
+    success_url = reverse_lazy('fileupload')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['documents'] = Upload.objects.all()
+        return context
+
 
 class CalendarListView(ListView):
     model = Calendar
@@ -136,6 +152,17 @@ def getCalendar(request, id):
 def calendar_api(request):
     error = {}
     try:
+        request.session['status_id'] = ''
+        request.session['type_id'] = ''
+        request.session['reason_id'] = ''
+        request.session['business_id'] = ''
+        request.session['module_id'] = ''
+        request.session['department_id'] = ''
+        request.session['module_id'] = ''
+        request.session['area_id'] = ''
+    except:
+        pass
+    try:
         start_date = request.GET['start_date']
     except:
         error['start_date'] = 'Missing start_date parameter'
@@ -146,87 +173,132 @@ def calendar_api(request):
         error['end_date'] = 'Missing end_date parameter'
         end_date = ''
     try:
+        type_ = request.GET['type']
+        try:
+            request.session['type_id'] = int(type_)
+        except:
+            pass
+    except:
+        type_ = ''
+    try:
+        reason = request.GET['reason']
+        try:
+            request.session['reason_id'] = int(reason)
+        except:
+            pass
+    except:
+        reason = ''
+    try:
         business = request.GET['business']
+        try:
+            request.session['business_id'] = int(business)
+        except:
+            pass
     except:
         business = ''
     try:
-        status = request.GET['status']
-    except:
-        status = ''
-
-    filters = models.Q()
-    if business:
-        filters &= models.Q(
-            business__id=business,
-        )
-    if status:
-        filters &= models.Q(
-            status__id=status,
-        )
-    else:
-        filters &= models.Q(
-            status__id=1,
-        )
-    filters &= models.Q(start_date__gte=start_date)
-
-    if len(error) < 1:
-        array = []
-        if len(status) < 1:
-            calendar_objects = Calendar.objects.filter(
-                models.Q(start_date__gte=start_date) |
-                models.Q(end_date__lte=end_date) |
-                models.Q(recurrenceRule__icontains='FREQ')
-            ).exclude(models.Q(status=3))
-        else:
-            calendar_objects = Calendar.objects.filter(
-                models.Q(status=status),
-                models.Q(start_date__gte=start_date) |
-                models.Q(end_date__lte=end_date) |
-                models.Q(recurrenceRule__icontains='FREQ')
-            )
+        module = request.GET['module']
         try:
-            pass
+            request.session['module_id'] = int(module)
         except:
             pass
-        res = []
-        s = ', '
-        for item in calendar_objects:
-            B_array = []
-            for b in item.business.all():
-                B_array.append(b.name)
-            M_array = []
-            for m in item.module.all():
-                M_array.append(m.name)
-            D_array = []
-            for d in item.department.all():
-                D_array.append(d.name)
-            A_array = []
-            for a in item.area.all():
-                A_array.append(a.name)
-            if item.status.name == 'Pending':
-                color = '#ffc107'
-            if item.status.name == 'Approved':
-                color = '#28a745'
-            if item.status.name == 'Declined':
-                color = '#dc3545'
-            res.append(
-                {
-                    'id': item.id,
-                    'text': item.title,
-                    'startDate': item.start_date,
-                    'endDate': item.end_date,
-                    'status': item.status.name,
-                    'business': s.join(B_array),
-                    'module': s.join(M_array),
-                    'department': s.join(D_array),
-                    'area': s.join(A_array),
-                    'recurrenceRule': item.recurrenceRule,
-                    'color': color,
-                    'status_id': item.status.id,
-                },
-            )
+    except:
+        module = ''
+    try:
+        department = request.GET['department']
+        try:
+            request.session['department_id'] = int(department)
+        except:
+            pass
+    except:
+        department = ''
+    try:
+        area = request.GET['area']
+        try:
+            request.session['area_id'] = int(area)
+        except:
+            pass
+    except:
+        area = ''
+    try:
+        status = request.GET['status']
+        try:
+            request.session['status_id'] = int(status)
+        except:
+            pass
+    except:
+        status = ''
+    filters = Q()
+    if status != '':
+        filters &= Q(status__id=status)
+    if type_ != '':
+        filters &= Q(types_id__id=type_)
+    if reason != '':
+        filters &= Q(reasons_id__id=reason)
+    if business != '':
+        filters &= Q(business__id=business)
+    if module != '':
+        filters &= Q(module__id=module)
+    if department != '':
+        filters &= Q(department__id=department)
+    if area != '':
+        filters &= Q(area__id=area)
+    if len(status) < 1:
+        calendar_objects = Calendar.objects.filter(
+            filters,
+            Q(start_date__range=[start_date, end_date]) |
+            Q(end_date__range=[start_date, end_date]) |
+            Q(recurrenceRule__icontains='FREQ')
+        ).exclude(Q(status=3))
     else:
-        res = error
+        calendar_objects = Calendar.objects.filter(
+            filters,
+            Q(start_date__range=[start_date, end_date]) |
+            Q(end_date__range=[start_date, end_date]) |
+            Q(recurrenceRule__icontains='FREQ')
+        )
+
+    res = []
+    s = ', '
+    for item in calendar_objects:
+        B_array = []
+        for b in item.business.all():
+            B_array.append(b.name)
+        M_array = []
+        for m in item.module.all():
+            M_array.append(m.name)
+        D_array = []
+        for d in item.department.all():
+            D_array.append(d.name)
+        A_array = []
+        for a in item.area.all():
+            A_array.append(a.name)
+        if item.status.name == 'Pending':
+            color = '#ffc107'
+        if item.status.name == 'Approved':
+            color = '#28a745'
+        if item.status.name == 'Declined':
+            color = '#dc3545'
+        res.append(
+            {
+                'id': item.id,
+                'text': item.title,
+                'startDate': item.start_date,
+                'endDate': item.end_date,
+                'status': item.status.name,
+                'business': s.join(B_array),
+                'module': s.join(M_array),
+                'department': s.join(D_array),
+                'area': s.join(A_array),
+                'recurrenceRule': item.recurrenceRule,
+                'color': color,
+                'status_id': item.status.id,
+                'type_id': item.types.id,
+                'type': item.types.name,
+                'reason_id': item.reasons.id,
+                'reason': item.reasons.name,
+            },
+        )
     return JsonResponse({'items': res}, safe=False)
 
 
@@ -598,8 +670,15 @@ def scheduler(request):
         'reasons': Reason.objects.filter(plant=Plant.objects.get(id=User.objects.get(id=userLogged).plant.id)),
         'statuses': Status.objects.filter(plant=Plant.objects.get(id=User.objects.get(id=userLogged).plant.id)),
         'my_approvals': my_approvals,
+        'status_id': getSet(request, 'status_id'),
+        'type_id': getSet(request, 'type_id'),
+        'reason_id': getSet(request, 'reason_id'),
+        'business_id': getSet(request, 'business_id'),
+        'module_id': getSet(request, 'module_id'),
+        'department_id': getSet(request, 'department_id'),
+        'area_id': getSet(request, 'area_id'),
     }
-
+    print(context)
     return render(request, 'scheduler.html', context)
 
 
@@ -649,6 +728,13 @@ def view(request):
         'statuses': Status.objects.filter(plant=Plant.objects.get(id=User.objects.get(id=userLogged).plant.id)),
         'my_count': my_count,
         'my_approvals': my_approvals,
+        'status_id': getSet(request, 'status_id'),
+        'type_id': getSet(request, 'type_id'),
+        'reason_id': getSet(request, 'reason_id'),
+        'business_id': getSet(request, 'business_id'),
+        'module_id': getSet(request, 'module_id'),
+        'department_id': getSet(request, 'department_id'),
+        'area_id': getSet(request, 'area_id'),
     }
 
     return render(request, 'timeline.html', context)
@@ -744,6 +830,8 @@ def process(request):
         action = statusFilter(request)
     elif getSet(request, 'type') == 'update_request':
         action = updateRequest(request)
+    elif getSet(request, 'type') == 'update_profile':
+        action = updateProfile(request)
     return action
 
 
@@ -1306,6 +1394,21 @@ def userLogin(request):
     return action
 
 
+def updateProfile(request):
+    request.session['postData'] = request.POST
+    itemToUpdate = User.objects.get(id=request.session['userLogged'])
+    itemToUpdate.first_name = getSet(request, 'first_name')
+    itemToUpdate.last_name = getSet(request, 'last_name')
+    itemToUpdate.email = getSet(request, 'email')
+    itemToUpdate.plant = Plant.objects.get(id=getSet(request, 'plant_id'))
+    itemToUpdate.profile_pic = getSet(request, 'profile_pic')
+    messages.info(request, "Account Updated Successfully",
+                  extra_tags='upper')
+    # Redirecting to home
+    action = redirect("/home")
+    return action
+
+
 def userReg(request):
     errors = User.objects.basic_validator(request.POST)
     request.session['postData'] = request.POST
@@ -1323,7 +1426,7 @@ def userReg(request):
             plant=Plant.objects.get(id=getSet(request, 'plant_id'))
         )
         messages.info(request, "User Account Successfully Created",
-                      extra_tags='upper')
+                      extra_tags='success')
         # Cleaning up the reg form
         request.session['first_name'] = ''
         request.session['last_name'] = ''
@@ -1370,7 +1473,7 @@ def logout(request):
 
 
 def getSet(request, name):
-    response = None
+    response = ''
     try:
         if request.POST[name]:
             response = request.POST[name]
