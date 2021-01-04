@@ -27,24 +27,29 @@ try {
 
     }
 
+    try {
 
+        if (sessionStorage.getItem('id')) {
 
+            $.ajax({ url: `/question_response/${sessionStorage.getItem('id')}` }).done(function (response) {
+                sessionStorage.setItem('question_response', JSON.stringify(response))
+                setTimeout(() => {
+                    try {
+                        var question_response = JSON.parse(sessionStorage.getItem('question_response'))
+                        question_response.forEach((e) => {
+                            $(`#${e.q_id}`).val(`${e.response}`)
+                        })
+                    } catch (error) {
 
-    $.ajax({ url: `/question_response/${sessionStorage.getItem('id')}` }).done(function (response) {
-        sessionStorage.setItem('question_response', JSON.stringify(response))
-        setTimeout(() => {
-            try {
-                var question_response = JSON.parse(sessionStorage.getItem('question_response'))
-                question_response.forEach((e) => {
-                    $(`#${e.q_id}`).val(`${e.response}`)
-                })
-            } catch (error) {
+                    }
 
-            }
+                }, 200);
+            });
 
-        }, 200);
-    });
+        }
+    } catch (error) {
 
+    }
     setTimeout(() => {
         if (sessionStorage.getItem('b_ids')) {
             var b_ids = sessionStorage.getItem('b_ids').split(',')

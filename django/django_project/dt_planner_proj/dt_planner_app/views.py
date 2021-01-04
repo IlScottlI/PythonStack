@@ -480,9 +480,21 @@ def question_response(request, id):
 
 
 def approver(request, id):
-    data = list(Approver.objects.filter(
-        id=id).values())
-    return JsonResponse(data, safe=False)
+    res = []
+    items = Approver.objects.filter(id=id).all()
+    for item in items:
+        res.append({
+            'id': item.id,
+            'plant_id': item.user.plant_id,
+            'first_name': item.user.first_name,
+            'last_name': item.user.last_name,
+            'email': item.user.email,
+            'admin': item.user.admin,
+            'created_at': item.user.created_at,
+            'updated_at': item.user.updated_at,
+        })
+
+    return JsonResponse(res, safe=False)
 
 
 def contributor(request, id):

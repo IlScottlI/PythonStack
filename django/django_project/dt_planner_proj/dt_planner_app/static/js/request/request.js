@@ -492,7 +492,7 @@ function getApprover(id) {
     } catch (error) {
 
     }
-    $.get(`/user/${id}`).done(function (data) {
+    $.get(`/approver/${id}`).done(function (data) {
         data.forEach(element => {
             if (!approverBankIDs.includes(id)) {
                 populateApproverBank(element)
