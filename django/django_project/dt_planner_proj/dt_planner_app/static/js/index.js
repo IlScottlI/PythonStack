@@ -23,7 +23,7 @@ var langs_datePicker = [];
 var langMenuItems = [];
 
 
-var langListURL = 'locale';
+var langListURL = 'https://graph.microsoft.com/v1.0/sites/892fe68e-73b7-4e17-9605-d2ac73dc2b3a,9e6927cb-2f3e-4189-8f92-f6733f30ff3b/lists/57b4fca1-69b5-4e6a-a7c5-312f55425817/items';
 
 var loadChecker = setInterval(() => {
     initlizeLanguage(localStorage.getItem('lang'));
