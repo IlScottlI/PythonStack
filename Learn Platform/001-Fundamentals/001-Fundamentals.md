@@ -12,7 +12,9 @@
 
 ## Course Outline
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DRoHzLNipkI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=DRoHzLNipkI" target="_blank">
+ <img src="http://img.youtube.com/vi/DRoHzLNipkI/mqdefault.jpg" alt="Watch the video" width="240" height="180" border="10" />
+</a>
 
 
 Before we get started, we wanted to give you a subjective idea about how difficult each day will be in relation to the Belt Exam. ***Note the actual stress level varies by student, but this is our experience in teaching the stack.***
