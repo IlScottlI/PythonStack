@@ -13,6 +13,8 @@
 ## Course Outline
 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DRoHzLNipkI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 [![Watch the video](https://img.youtube.com/vi/DRoHzLNipkI/default.jpg)](https://youtu.be/DRoHzLNipkI)
 
@@ -555,7 +557,10 @@ print(x.title())
 "Hello World"
 ```
 
-[INSERT VIDEO]
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bRsa0vy1nx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[![Watch the video](https://img.youtube.com/vi/bRsa0vy1nx8/default.jpg)](https://youtu.be/bRsa0vy1nx8)
+
 
 #### The following is a list of commonly used string methods:
 
