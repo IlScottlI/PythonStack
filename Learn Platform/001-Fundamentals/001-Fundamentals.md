@@ -1615,6 +1615,11 @@ The animation below demonstrates how bubble sort works.
 
 ![](http://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif)
 
+## Demonstration
+Try it yourself! If you get stuck, here's a video with some tips and guidance.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KNx8BsWgkys" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 # Assignment: Selection Sort
 
 ## Objectives:
