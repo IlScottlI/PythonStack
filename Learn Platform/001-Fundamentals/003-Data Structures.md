@@ -15,6 +15,8 @@ We have been  _using_  data structures for a few weeks, but now that we know how
 
 ## Video Overview
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/o-flkaAcRZ4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Helpful links
 
 1.  [https://web.stanford.edu/class/cs101/bits-bytes.html](https://web.stanford.edu/class/cs101/bits-bytes.html)
