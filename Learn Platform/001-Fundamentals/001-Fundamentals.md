@@ -340,7 +340,7 @@ To deactivate a virtual environment, just type  `deactivate`  in the command lin
 
 If these ideas are still a little bit fuzzy, here's a video to see these commands in action:
 
-[INSERT VIDEO]
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bRsa0vy1nx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Assignment: Practice using pip in a virtual environment
 
@@ -557,9 +557,7 @@ print(x.title())
 "Hello World"
 ```
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bRsa0vy1nx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-[![Watch the video](https://img.youtube.com/vi/bRsa0vy1nx8/default.jpg)](https://youtu.be/bRsa0vy1nx8)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y-TDNzpd6fE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 #### The following is a list of commonly used string methods:
@@ -1417,6 +1415,12 @@ Note all the different ways we are able to call on this one function! Even thoug
 -   one  _named_  argument provided -- provided value is used as the value of the parameter of the same name, and the other parameter's default value is used
 -   both  _unnamed_  arguments provided -- values assigned to parameters in order (i.e. what we've been doing up to this point)
 -   both  _named_  arguments provided -- values are assigned to associated parameter (and then order doesn't matter!)
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/u6-vXrHLQow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
 
 # Assignment: Functions Intermediate I
 
