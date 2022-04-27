@@ -1130,6 +1130,9 @@ In our examples you may have noticed that our functions were returning values of
 -   Avoid common mistakes of using functions
 -   Really understand how to use T-diagram to correctly predict and debug codes
 
+Intro Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D9LGvOCaeC4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 For each of the following code snippets, first predict the output (what you will see printed to the terminal). Once you've made a prediction, run the code snippet to see if you are correct!
 ```py
@@ -1627,7 +1630,10 @@ Try it yourself! If you get stuck, here's a video with some tips and guidance.
 
 If you're given a list with a bunch of numbers and you're supposed to sort the numbers (with the smallest number on the left and the largest number on the right), how would you do this? There are numerous sorting algorithms to sort numbers in the list. We'll introduce one of the simplest sorting algorithm called selection sort.
 
-Selection sort works by iterating through the list, finding the minimum value, and moving it to the beginning of the list. Then, ignoring the first position, which is now sorted, iterate through the list again to find the next minimum value and move it to index 1. This continues until all values are sorted. Here's an animation and a  [video](https://vimeo.com/76380380)  of selection sort:
+Selection sort works by iterating through the list, finding the minimum value, and moving it to the beginning of the list. Then, ignoring the first position, which is now sorted, iterate through the list again to find the next minimum value and move it to index 1. This continues until all values are sorted. Here's an animation and a  [video](https://youtu.be/xclLa_BIQMg)  of selection sort:
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xclLa_BIQMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ![](http://upload.wikimedia.org/wikipedia/commons/9/94/Selection-Sort-Animation.gif)
 
@@ -1641,7 +1647,9 @@ Selection sort works by iterating through the list, finding the minimum value, a
 
 ----------
 
-Build an algorithm for insertion sort. Please watch the video  [here](https://vimeo.com/76380630)  to understand how insertion sort works and implement the code. Basically, this sort works by starting at index 1, shifting that value to the left until it is sorted relative to all values to the left, and then moving on to the next index position and performing the same shifts until the end of the list is reached. The following animation also shows how insertion sort is done.
+Build an algorithm for insertion sort. Please watch the video  [here](https://youtu.be/g9SvfIHBImI)  to understand how insertion sort works and implement the code. Basically, this sort works by starting at index 1, shifting that value to the left until it is sorted relative to all values to the left, and then moving on to the next index position and performing the same shifts until the end of the list is reached. The following animation also shows how insertion sort is done.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/g9SvfIHBImI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ![](http://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif)
 
@@ -1670,9 +1678,9 @@ Sometimes if you are stuck for too long, you need to just start all over as this
 ----------
 
 A ternary operator, or conditional expression, is an operator that takes 3 arguments. Most simply, they are a one line if-else statement. In many languages, we see this same functionality with the symbols  `?`  and  `:`. In Python, the syntax is as follows:
-
+```
 <result_if_true> if <condition> else <result_if_false>
-
+```
 If you've seen this operator in any other languages, Python's syntax can feel awkward, but with practice it will become easier to use and read. And don't forget that we can always use the traditional if-else statement instead.
 
 Here's an example:
@@ -1693,6 +1701,8 @@ print('Coding Dojo' if stacks >= 3 else 'You are not Coding Dojo!')
 -   Understand what an anonymous function is and when to use it
 -   Recognize the syntax of an anonymous function
 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KnKkK4s26NA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Another type of function mentioned earlier is the _anonymous_ function. Simply put, an anonymous function is a function without a name. In Python, anonymous functions are created with the **lambda** keyword. These functions are used for various purposes:
 
@@ -1891,6 +1901,10 @@ To install opencv, you may need to run
 pip install opencv-python
 
 Note that you need to clone the codes in the Git repository (outlined in the tutorial) to access all the files needed in the tutorial.
+
+## Short Video Demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VCAUX0rPY4M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 
